@@ -5,8 +5,11 @@
  */
 package Controlador;
 
+import Modelo.Bean;
+import Modelo.Dao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,17 +35,39 @@ public class Servlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Servlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Servlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        PrintWriter out = response.getWriter();
+         
+        int opcion=Integer.parseInt(request.getParameter("txtOPCION"));
+        String id=request.getParameter("id_producto");
+        String nombre=request.getParameter("nombre_producto");
+        String precio=request.getParameter("precio_producto");
+        
+        Bean B=new Bean(id,nombre,precio);
+        Dao D=new Dao(B);
+        ResultSet rs;
+        
+        String mBien="Operacion exitosa";
+        String mMal="Operacion fallida";
+        
+        switch (opcion){
+            case 1:
+                if (D.agrear()){
+                    request.setAttribute("mensaje",mBien);
+                }else{request.setAttribute("mensaje", mMal);}
+                request.getRequestDispatcher("FOrmularioProducto.jsp").forward(request, response);
+                break;
+            case 2:
+                if (D.borrar()){
+                    request.setAttribute("mensaje",mBien);
+                }else{request.setAttribute("mensaje", mMal);}
+                request.getRequestDispatcher("FOrmularioProducto.jsp").forward(request, response);
+                break;
+            case 3:
+                if (D.actualizarRegistro()){
+                    request.setAttribute("mensaje",mBien);
+                }else{request.setAttribute("mensaje", mMal);}
+                request.getRequestDispatcher("FOrmularioProducto.jsp").forward(request, response);
+                break;
         }
     }
 

@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Modelo.Bean;
-import Utilidades.*;
 
 public class Dao {
     public Connection conn=null;
@@ -29,7 +27,7 @@ public class Dao {
             st = conn.createStatement();
             id = producto.getIdProd();
             nombre =producto.getNombreProd();
-            apellido =producto.getPrecioProd();
+            precio =producto.getPrecioProd();
         } catch (SQLException ex) {
             Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
         }
